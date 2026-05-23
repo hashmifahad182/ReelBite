@@ -1,0 +1,159 @@
+.welcome-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, rgba(15,118,110,0.18), transparent 28%),
+              radial-gradient(circle at bottom right, rgba(6,182,212,0.14), transparent 32%),
+              var(--color-bg);
+  padding: 50px;
+}
+
+.welcome-panel {
+  width: min(900px, 100%);
+  display: grid;
+  /* grid-template-columns: 1fr 1.3fr; */
+  gap: 20px;
+  align-items: center;
+}
+
+.welcome-copy {
+  background: var(--color-surface);
+  border: 1px solid rgba(15,118,110,0.12);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  box-shadow: var(--shadow-xl);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: -10px;
+}
+
+.welcome-copy h1 {
+  font-size: clamp(4rem, 4vw, 5rem);
+  line-height: 0.95;
+  margin-bottom: 22px;
+  color: var(--color-text);
+}
+
+.welcome-description {
+  max-width: 100%;
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.welcome-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.welcome-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 28px;
+  border-radius: var(--radius-xl);
+  border: 1px solid transparent;
+  background: rgba(229, 228, 228, 0.9);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 700;
+  min-width: 170px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.welcome-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.welcome-button-primary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.welcome-button-secondary {
+  background: hsl(180, 37%, 88%);
+  color: var(--color-text);
+}
+
+/* .welcome-hero {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-card {
+  background: linear-gradient(180deg, rgba(15,118,110,0.11), rgba(255,255,255,0.95));
+  border: 1px solid rgba(15,118,110,0.12);
+  border-radius: var(--radius-2xl);
+  padding: 42px 36px;
+  min-height: 320px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-card h2 {
+  font-size: 2.3rem;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.hero-card p {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.hero-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.hero-card li {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  color: var(--color-text);
+  border: 1px solid rgba(15,118,110,0.1);
+} */
+
+@media (max-width: 900px) {
+  .welcome-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-copy,
+  .hero-card {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 620px) {
+  .welcome-page {
+    padding: 20px;
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+  }
+
+  .welcome-button {
+    width: 100%;
+  }
+}

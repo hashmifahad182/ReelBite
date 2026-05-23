@@ -1,28 +1,42 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
-      email,
-      password
-    }, { withCredentials: true });
+    try {
+      const response = await axios.post("/api/auth/food-partner/login", {
+        email,
+        password
+      }, { withCredentials: true });
 
-    console.log(response.data);
-
-    navigate("/create-food"); // Redirect to create food page after login
-
+      console.log(response.data);
+      const partnerId = response.data.foodPartner?.id || response.data.foodPartner?._id;
+      if (!partnerId) {
+        setError('Unable to determine partner account ID.');
+        return;
+      }
+      navigate(`/food-partner/${partnerId}`);
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,6 +46,11 @@ const FoodPartnerLogin = () => {
           <h1 id="partner-login-title" className="auth-title">Partner login</h1>
           <p className="auth-subtitle">Access your dashboard and manage orders.</p>
         </header>
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="email">Email</label>
@@ -41,10 +60,15 @@ const FoodPartnerLogin = () => {
             <label htmlFor="password">Password</label>
             <input id="password" name="password" type="password" placeholder="Password" autoComplete="current-password" />
           </div>
-          <button className="auth-submit" type="submit">Sign In</button>
+          <button className="auth-submit" type="submit" disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
+          </button>
         </form>
         <div className="auth-alt-action">
-          New partner? <a href="/food-partner/register">Create an account</a>
+          New partner? <Link to="/food-partner/register">Create an account</Link>
+        </div>
+        <div className="auth-alt-action">
+          Not a partner? <Link to="/user/login">User login</Link>
         </div>
       </div>
     </div>

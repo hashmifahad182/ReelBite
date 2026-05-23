@@ -1,20 +1,23 @@
 /* CSS Theme Variables (Light & Dark via system preference) */
 :root {
-  --color-bg: #f9fafb;
+  --color-bg: #f7f9f7;
+  --color-bg-alt: #edf4f2;
   --color-surface: #ffffff;
-  --color-surface-alt: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-danger: #dc2626;
+  --color-surface-alt: #eef5f4;
+  --color-border: #d8e4e0;
+  --color-text: #102a43;
+  --color-text-secondary: #4c6b73;
+  --color-accent: #0f766e;
+  --color-accent-hover: #0f5e56;
+  --color-accent-soft: rgba(15,118,110,0.14);
+  --color-danger: #ef4444;
 
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
 
-  --font-stack: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-stack: Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -22,37 +25,48 @@
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --space-7: 28px;
   --space-8: 32px;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
-  --shadow-md: 0 4px 12px -2px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.06);
+  --shadow-sm: 0 8px 20px rgba(15, 118, 110, 0.08);
+  --shadow-md: 0 16px 48px rgba(15, 118, 110, 0.12);
+  --shadow-xl: 0 32px 80px rgba(15, 118, 110, 0.14);
 
-  --transition-base: 120ms cubic-bezier(.4,0,.2,1);
+  --transition-base: 160ms cubic-bezier(.4,0,.2,1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f172a; /* slate-900 */
-    --color-surface: #1e293b; /* slate-800 */
-    --color-surface-alt: #24324a; /* custom */
-    --color-border: #334155; /* slate-700 */
-    --color-text: #f1f5f9; /* slate-100 */
-    --color-text-secondary: #94a3b8; /* slate-400 */
-    --color-accent: #3b82f6; /* blue-500 */
-    --color-accent-hover: #60a5fa; /* blue-400 */
-    --color-danger: #f87171; /* red-400 */
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
-    --shadow-md: 0 4px 18px -4px rgba(0,0,0,.5),0 2px 6px -2px rgba(0,0,0,.4);
+    --color-bg: #07121a;
+    --color-bg-alt: #0f2939;
+    --color-surface: #112433;
+    --color-surface-alt: #173446;
+    --color-border: #1f3a4f;
+    --color-text: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-accent: #22c55e;
+    --color-accent-hover: #16a34a;
+    --color-accent-soft: rgba(34,197,94,0.16);
+    --color-danger: #fb7185;
+    --shadow-sm: 0 8px 20px rgba(0,0,0,0.4);
+    --shadow-md: 0 16px 48px rgba(0,0,0,0.45);
+    --shadow-xl: 0 32px 80px rgba(0,0,0,0.5);
   }
 }
 
 /* Base element theming (can be imported once globally) */
 body {
   font-family: var(--font-stack);
-  background: var(--color-bg);
+  background: radial-gradient(circle at top left, rgba(15,118,110,0.12), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(34,197,94,0.08), transparent 26%),
+    var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.4;
+  line-height: 1.5;
+}
+
+button, input, textarea, select {
+  font: inherit;
 }
 
 a {
@@ -64,3 +78,25 @@ a {
 a:hover, a:focus-visible { color: var(--color-accent-hover); }
 
 ::selection { background: var(--color-accent); color: #fff; }
+
+/* Hide native scrollbars while keeping scrolling behaviour */
+html, body {
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+}
+
+/* WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+/* Ensure scrollable containers still allow touch/trackpad scrolling */
+.reels-feed, .reels-page, .welcome-page, .admin-container, .auth-page-wrapper {
+  -webkit-overflow-scrolling: touch;
+}

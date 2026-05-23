@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
 
@@ -13,14 +13,14 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("http://localhost:3000/api/auth/user/login", {
+    const response = await axios.post("/api/auth/user/login", {
       email,
       password
     }, { withCredentials: true });
 
     console.log(response.data);
 
-    navigate("/"); // Redirect to home after login
+    navigate("/home"); // Redirect to home after login
 
   };
 
@@ -43,7 +43,10 @@ const UserLogin = () => {
           <button className="auth-submit" type="submit">Sign In</button>
         </form>
         <div className="auth-alt-action">
-          New here? <a href="/user/register">Create account</a>
+          New here? <Link to="/user/register">Create account</Link>
+        </div>
+        <div className="auth-alt-action">
+          Are you a partner? <Link to="/food-partner/login">Partner login</Link>
         </div>
       </div>
     </div>

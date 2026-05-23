@@ -1,3 +1,26 @@
+# Dependencies
+node_modules
+
+# Environment files
 .env
-node_modules/
-dist/
+
+# Build folders
+dist
+build
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
+
+# Dataset folder
+Dataset
+
+# Vite cache
+.vite
+
+# Optional
+coverage
+
+.vscode

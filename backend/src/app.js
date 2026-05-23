@@ -1,24 +1,54 @@
-// create server
 const express = require('express');
-const app = express();
 const cookieParser = require('cookie-parser');
-const authRoutes = require('./routes/auth.routes');
-const foodRoutes = require('./routes/food.routes');
 const cors = require('cors');
 
-// middlewares
-app.use(express.json());
-app.use(cookieParser());
+const authRoutes = require('./routes/auth.routes');
+const foodRoutes = require('./routes/food.routes');
+const foodPartnerRoutes = require('./routes/food-partner.routes');
+const adminRoutes = require('./routes/admin.routes');
+const uploadRoutes = require('./routes/upload.routes');
+
+const app = express();
+
+/*
+|--------------------------------------------------------------------------
+| Middlewares
+|--------------------------------------------------------------------------
+*/
+
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true
 }));
 
-app.get("/" , (req,res) =>{
-    res.send("Hello World");
-})
+app.use(express.json());
 
-app.use("/api/auth",authRoutes);
-app.use("/api/food",foodRoutes);
+app.use(cookieParser());
+
+/*
+|--------------------------------------------------------------------------
+| Health Check
+|--------------------------------------------------------------------------
+*/
+
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
+
+/*
+|--------------------------------------------------------------------------
+| Routes
+|--------------------------------------------------------------------------
+*/
+
+app.use('/api/auth', authRoutes);
+
+app.use('/api/food', foodRoutes);
+
+app.use('/api/food-partner', foodPartnerRoutes);
+
+app.use('/api/admin', adminRoutes);
+
+app.use('/api/upload', uploadRoutes);
 
 module.exports = app;

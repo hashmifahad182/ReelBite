@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth-shared.css';
 import axios from 'axios';
@@ -8,9 +7,16 @@ import { useNavigate } from 'react-router-dom';
 const FoodPartnerRegister = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
   
-  const handleSubmit = (e) => { 
+  const handleSubmit = async (e) => { 
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
 
     const businessName = e.target.businessName.value;
     const contactName = e.target.contactName.value;
@@ -19,22 +25,31 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    axios.post("http://localhost:3000/api/auth/food-partner/register", {
-      name:businessName,
-      contactName,
-      phone,
-      email,
-      password,
-      address
-    }, { withCredentials: true })
-    
-      .then(response => {
-        console.log(response.data);
-        navigate("/create-food"); // Redirect to create food page after successful registration
-      })
-      .catch(error => {
-        console.error("There was an error registering!", error);
-      });
+    try {
+      const payload = {
+        name:businessName,
+        contactName,
+        phone,
+        email,
+        password,
+        address
+      }
+      if (imageUrl) payload.image = imageUrl
+
+      const response = await axios.post("/api/auth/food-partner/register", payload, { withCredentials: true });
+
+      console.log(response.data);
+      setSuccess('Registration successful! Waiting for admin approval. You will be able to login once approved.');
+      setTimeout(() => {
+        navigate("/food-partner/login");
+      }, 2000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      setError(errorMessage);
+      console.error("There was an error registering!", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,6 +62,28 @@ const FoodPartnerRegister = () => {
         <nav className="auth-alt-action" style={{marginTop: '-4px'}}>
           <strong style={{fontWeight:600}}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
         </nav>
+        {error && <div className="error-message">{error}</div>}
+        {success && <div style={{background: '#d1fae5', color: '#065f46', border: '1px solid #6ee7b7', padding: 'var(--space-3) var(--space-4)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', textAlign: 'center'}}>{success}</div>}
+        <div style={{marginBottom: '12px'}}>
+          <label style={{display: 'block', marginBottom: 8}}>Business logo (optional)</label>
+          <input type="file" accept="image/*" onChange={async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            setLoading(true);
+            setError('');
+            try {
+              const form = new FormData();
+              form.append('file', file);
+              const uploadRes = await axios.post('/api/upload/temp', form, { headers: {'Content-Type': 'multipart/form-data'} });
+              setImageUrl(uploadRes.data.url);
+            } catch (err) {
+              setError('Image upload failed. Try again or skip.');
+            } finally {
+              setLoading(false);
+            }
+          }} />
+          {imageUrl && <div style={{marginTop:8}}>Preview: <img src={imageUrl} alt="preview" style={{height:60,borderRadius:8,display:'block',marginTop:8}}/></div>}
+        </div>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="businessName">Business Name</label>
@@ -75,7 +112,9 @@ const FoodPartnerRegister = () => {
             <input id="address" name="address" placeholder="123 Market Street" autoComplete="street-address" />
             <p className="small-note">Full address helps customers find you faster.</p>
           </div>
-          <button className="auth-submit" type="submit">Create Partner Account</button>
+          <button className="auth-submit" type="submit" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Create Partner Account'}
+          </button>
         </form>
         <div className="auth-alt-action">
           Already a partner? <Link to="/food-partner/login">Sign in</Link>
