@@ -181,13 +181,9 @@ async function loginFoodPartner(req,res){
     })
 
     res.status(200).json({
-        message:"Food Partner logged in successfully",
-        foodPartner:{
-            id:foodPartner._id,
-            name:foodPartner.name,
-            email:foodPartner.email,
-        }
-    })
+    message:"Food Partner logged in successfully",
+    foodPartner
+})
 }
 
 function logoutFoodPartner(req,res){    

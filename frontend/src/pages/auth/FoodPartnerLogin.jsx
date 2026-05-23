@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import api from '../../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
@@ -18,13 +18,14 @@ const FoodPartnerLogin = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post("/api/auth/food-partner/login", {
+      const response = await api.post("/api/auth/food-partner/login", {
         email,
         password
-      }, { withCredentials: true });
+      });
 
       console.log(response.data);
-      const partnerId = response.data.foodPartner?.id || response.data.foodPartner?._id;
+      const partnerId = response.data.foodPartner?._id;
+      
       if (!partnerId) {
         setError('Unable to determine partner account ID.');
         return;
