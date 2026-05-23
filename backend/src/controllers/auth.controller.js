@@ -89,10 +89,12 @@ async function loginUser(req,res){
 }
 
 function logoutUser(req,res){
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     });
     res.status(200).json({
         message:"User logged out successfully"
@@ -187,10 +189,12 @@ async function loginFoodPartner(req,res){
 }
 
 function logoutFoodPartner(req,res){    
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     });
     res.status(200).json({
         message:"Food Partner logged out successfully"
