@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import api from '../../api/axios'
 import '../../styles/reels.css'
 import ReelFeed from '../../components/ReelFeed'
 
@@ -8,7 +8,7 @@ const Home = () => {
     // Autoplay behavior is handled inside ReelFeed
 
     useEffect(() => {
-        axios.get("/api/food", { withCredentials: true })
+        api.get("/api/food", { withCredentials: true })
             .then(response => {
 
                 console.log(response.data);
@@ -49,7 +49,7 @@ const Home = () => {
 
     async function likeVideo(item) {
         try {
-            const response = await axios.post("/api/food/like", { foodId: item._id }, { withCredentials: true })
+            const response = await api.post("/api/food/like", { foodId: item._id }, { withCredentials: true })
             const isNowLiked = Boolean(response.data.like)
 
             setVideos((prev) => prev.map((v) => {
@@ -69,7 +69,7 @@ const Home = () => {
 
     async function saveVideo(item) {
         try {
-            const response = await axios.post("/api/food/save", { foodId: item._id }, { withCredentials: true })
+            const response = await api.post("/api/food/save", { foodId: item._id }, { withCredentials: true })
             const message = (response.data.message || '').toLowerCase()
             const isNowSaved = message.includes('saved successfully') && !message.includes('unsaved')
 

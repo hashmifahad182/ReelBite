@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axios'
 import '../../styles/create-food.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,8 +15,8 @@ const CreateFood = () => {
     const navigate = useNavigate();
 
     async function handleLogout() {
-        try { await axios.get('/api/auth/user/logout', { withCredentials: true }) } catch (e) {}
-        try { await axios.get('/api/auth/food-partner/logout', { withCredentials: true }) } catch (e) {}
+        try { await api.get('/api/auth/user/logout', { withCredentials: true }) } catch (e) {}
+        try { await api.get('/api/auth/food-partner/logout', { withCredentials: true }) } catch (e) {}
         navigate('/user/login')
     }
 
@@ -37,7 +37,7 @@ const CreateFood = () => {
     }, [videoURL]);
 
     useEffect(() => {
-        axios.get('/api/auth/me', { withCredentials: true })
+        api.get('/api/auth/me', { withCredentials: true })
             .then(response => setCurrentUser(response.data))
             .catch(() => setCurrentUser(null));
     }, []);
@@ -112,7 +112,7 @@ const CreateFood = () => {
             formData.append('description', description);
             formData.append('video', videoFile); // ⚠️ Ensure backend expects "video"
 
-            const response = await axios.post(
+            const response = await api.post(
                 '/api/food',
                 formData,
                 { withCredentials: true }

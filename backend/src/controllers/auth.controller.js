@@ -27,10 +27,12 @@ async function registerUser(req,res){
     const token=jwt.sign({
         id:user._id,
     },process.env.JWT_SECRET)
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
 
     res.status(201).json({
@@ -68,10 +70,12 @@ async function loginUser(req,res){
         id:user._id,
     },process.env.JWT_SECRET)
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
 
     res.status(200).json({
@@ -168,10 +172,12 @@ async function loginFoodPartner(req,res){
         id:foodPartner._id,
     },process.env.JWT_SECRET)
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
 
     res.status(200).json({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axios'
 import '../../styles/admin-dashboard.css';
 
 export default function AdminDashboard() {
@@ -30,10 +30,10 @@ export default function AdminDashboard() {
         setLoading(true);
         try {
             const [pendingRes, allRes] = await Promise.all([
-                axios.get('/api/admin/pending-partners', {
+                api.get('/api/admin/pending-partners', {
                     headers: { 'x-admin-password': password }
                 }),
-                axios.get('/api/admin/all-partners', {
+                api.get('/api/admin/all-partners', {
                     headers: { 'x-admin-password': password }
                 })
             ]);
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
 
     const handleApprove = async (partnerId) => {
         try {
-            await axios.post(`/api/admin/approve-partner/${partnerId}`, {}, {
+            await api.post(`/api/admin/approve-partner/${partnerId}`, {}, {
                 headers: { 'x-admin-password': storedPassword }
             });
             setMessage(`Partner approved successfully`);
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
         if (!window.confirm('Are you sure you want to reject this registration?')) return;
         
         try {
-            await axios.delete(`/api/admin/reject-partner/${partnerId}`, {
+            await api.delete(`/api/admin/reject-partner/${partnerId}`, {
                 headers: { 'x-admin-password': storedPassword }
             });
             setMessage(`Partner rejected successfully`);
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
         if (!window.confirm(`Are you sure you want to permanently delete "${partnerName}" and all associated data? This cannot be undone.`)) return;
         
         try {
-            await axios.delete(`/api/admin/delete-partner/${partnerId}`, {
+            await api.delete(`/api/admin/delete-partner/${partnerId}`, {
                 headers: { 'x-admin-password': storedPassword }
             });
             setMessage(`Business "${partnerName}" deleted successfully`);

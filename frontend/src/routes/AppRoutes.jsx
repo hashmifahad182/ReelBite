@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import axios from 'axios';
+import api from "../api/axios";
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
 import UserLogin from '../pages/auth/UserLogin';
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
     const [auth, setAuth] = useState('loading');
 
     useEffect(() => {
-        axios.get('/api/auth/verify', { withCredentials: true })
+        api.get('/api/auth/verify', { withCredentials: true })
             .then(() => setAuth(true))
             .catch(() => setAuth(false));
     }, []);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api/axios'
 import '../styles/bottom-nav.css'
 
 const BottomNav = () => {
@@ -9,13 +9,13 @@ const BottomNav = () => {
   async function handleLogout() {
     try {
       // attempt user logout, then partner logout to cover both account types
-      await axios.get('/api/auth/user/logout', { withCredentials: true })
+      await api.get('/api/auth/user/logout')
     } catch (err) {
       // ignore and try partner logout
     }
 
     try {
-      await axios.get('/api/auth/food-partner/logout', { withCredentials: true })
+      await api.get('/api/auth/food-partner/logout')
     } catch (err) {
       // ignore
     }

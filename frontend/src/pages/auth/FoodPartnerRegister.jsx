@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import api from '../../api/axios'
 import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
@@ -36,7 +36,7 @@ const FoodPartnerRegister = () => {
       }
       if (imageUrl) payload.image = imageUrl
 
-      const response = await axios.post("/api/auth/food-partner/register", payload, { withCredentials: true });
+      const response = await api.post("/api/auth/food-partner/register", payload, { withCredentials: true });
 
       console.log(response.data);
       setSuccess('Registration successful! Waiting for admin approval. You will be able to login once approved.');
@@ -74,7 +74,7 @@ const FoodPartnerRegister = () => {
             try {
               const form = new FormData();
               form.append('file', file);
-              const uploadRes = await axios.post('/api/upload/temp', form, { headers: {'Content-Type': 'multipart/form-data'} });
+              const uploadRes = await api.post('/api/upload/temp', form, { headers: {'Content-Type': 'multipart/form-data'} });
               setImageUrl(uploadRes.data.url);
             } catch (err) {
               setError('Image upload failed. Try again or skip.');

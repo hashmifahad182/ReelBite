@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../../styles/profile.css'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../api/axios'
 
 const Profile = () => {
     const { id } = useParams()
@@ -14,13 +14,13 @@ const Profile = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('/api/auth/me', { withCredentials: true })
+        api.get('/api/auth/me', { withCredentials: true })
             .then(response => setCurrentUser(response.data))
             .catch(() => setCurrentUser(null))
     }, [])
 
     useEffect(() => {
-        axios.get(`/api/food-partner/${id}`, { withCredentials: true })
+        api.get(`/api/food-partner/${id}`, { withCredentials: true })
             .then(response => {
                 const partnerData = response.data?.foodPartner || response.data
                 const foodItems = partnerData?.foodItems || response.data?.foodItems || []
@@ -45,7 +45,7 @@ const Profile = () => {
 
     async function handleLogout() {
         try {
-            await axios.get('/api/auth/food-partner/logout', { withCredentials: true })
+            await api.get('/api/auth/food-partner/logout', { withCredentials: true })
         } catch {
             // ignore logout errors
         }
